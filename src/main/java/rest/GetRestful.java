@@ -5,7 +5,6 @@ import model.stock.Stock;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,6 @@ public class GetRestful {
     @Path("/buyShares")
     public Response buyShares() {
         return null;
-
     }
 
 
@@ -53,6 +51,20 @@ public class GetRestful {
         } else {
             return Response.status(500).build();
         }
+    }
+
+    //TODO
+    @PUT
+    @Path("/buyShare")
+    public Response busStock() {
+        return null;
+    }
+
+    //TODO
+    @GET
+    @Path("/stock")
+    public Response getStock() {
+        return null;
     }
 
 }
