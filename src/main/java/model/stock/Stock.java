@@ -14,21 +14,13 @@ public interface Stock {
      *
      * @return the symbol of the stock
      */
-    String getSymbol();
+    String getStockSymbol();
 
     /**
-     * This method returns all shares for this Stock
-     *
-     * @return a list of double numbers documenting the shares of each stock
+     * Get all shares for this stock
+     * @return a list of shares
      */
-    List<Double> getShare();
-
-    /**
-     * This method returns all dates when each share was bought accordingly
-     *
-     * @return a list of date documenting when shares are bought accordingly
-     */
-    List<LocalDate> getDate();
+    List<Share> getShares();
 
     /**
      * Buy certain amount of shares{share} in a given date{date}
@@ -45,26 +37,4 @@ public interface Stock {
      * @param date          the given date
      */
     void addAmount(double money, LocalDate date);
-
-    /**
-     * This method returns the cost of all shares of this stock bought before a certain date{date}
-     * Traverse all shares bought before the certain date
-     * Then add all shares' costs together to a variable
-     * Return this variable
-     *
-     * @param date the given searching date
-     * @return the cost before the given date
-     */
-    double getCost(LocalDate date);
-
-    /**
-     * This method returns the value of all shares of this stock bought before a certain date{date}
-     * Traverse all shares bought before the certain date
-     * Add all shares' value in the certain date together to a variable
-     * Return this variable
-     *
-     * @param date the given date to refer to
-     * @return the value of the stocks bought
-     */
-    double getValue(LocalDate date);
 }

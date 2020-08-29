@@ -1,4 +1,4 @@
-package model.Repository;
+package model.repository;
 
 import model.stock.Stock;
 

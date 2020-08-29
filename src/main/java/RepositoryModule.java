@@ -1,6 +1,6 @@
 import com.google.inject.AbstractModule;
-import model.Repository.Repository;
-import model.Repository.RepositoryImpl;
+import model.repository.Repository;
+import model.repository.RepositoryImpl;
 
 public class RepositoryModule extends AbstractModule {
 

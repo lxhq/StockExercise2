@@ -1,6 +1,7 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.jvnet.hk2.guice.bridge.api.GuiceBridge;
 import org.jvnet.hk2.guice.bridge.api.GuiceIntoHK2Bridge;

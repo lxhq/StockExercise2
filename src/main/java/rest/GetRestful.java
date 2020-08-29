@@ -1,13 +1,16 @@
 package rest;
 
-import model.Repository.Repository;
+import json.BuyShare;
+import model.repository.Repository;
 import model.stock.Stock;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/stocks")
 public class GetRestful {
@@ -17,54 +20,72 @@ public class GetRestful {
 
     @Path("/allStocks")
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllStocks() {
-        System.out.println("Get All Stocks");
         List<Stock> list = repository.getAllStocks();
-        String res = list.stream().map(a -> a.getSymbol()).collect(Collectors.joining(", "));
-        return Response.ok(res).build();
+        GenericEntity<List<Stock>> listWrapper = new GenericEntity<>(list){};
+        return Response
+                .status(Response.Status.OK)
+                .entity(listWrapper)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @GET
+    @Path("/stock/{ticker}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStock(@PathParam("ticker") String ticker) {
+        Stock stock = repository.getStock(ticker);
+        return Response
+                .status(Response.Status.OK)
+                .entity(stock)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @POST
     @Path("/createStock")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createStock(final String ticker) {
-        System.out.println("Create stock " + ticker);
+
         if (repository.createStock(ticker)) {
-            return Response.ok("Create " + ticker + " successfully").build();
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(repository.getStock(ticker))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
         } else {
-            return Response.status(404).build();
+            return Response
+                    .status(404)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/deleteStock")
+    public Response deleteStock(final String ticker) {
+        if (repository.deleteStock(ticker)) {
+            return Response
+                    .ok("Delete " + ticker + " successfully")
+                    .build();
+        } else {
+            return Response
+                    .status(500)
+                    .build();
         }
     }
 
     @PUT
     @Path("/buyShares")
-    public Response buyShares() {
-        return null;
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buyShares(BuyShare buyShare) {
+        Stock stock = repository.getStock(buyShare.getTicker());
+        stock.addShare(buyShare.getShares(), LocalDate.parse(buyShare.getDate()));
+        return Response
+                .status(Response.Status.OK)
+                .entity(stock)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
-
-
-    @DELETE
-    @Path("/deleteStock")
-    public Response deleteStock(final String ticker) {
-        System.out.println("delete stock " + ticker);
-        if (repository.deleteStock(ticker)) {
-            return Response.ok("Delete " + ticker + " successfully").build();
-        } else {
-            return Response.status(500).build();
-        }
-    }
-
-    //TODO
-    @PUT
-    @Path("/buyShare")
-    public Response busStock() {
-        return null;
-    }
-
-    //TODO
-    @GET
-    @Path("/stock")
-    public Response getStock() {
-        return null;
-    }
-
 }

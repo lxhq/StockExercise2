@@ -1,17 +1,23 @@
 package model.stock;
 
-import java.time.LocalDate;
-
 public class Share {
-    private LocalDate date;
+    private String date;
     private double share;
 
-    public Share(double share, LocalDate date) {
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setShare(double share) {
+        this.share = share;
+    }
+
+    public Share(double share, String date) {
         this.share = share;
         this.date = date;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 

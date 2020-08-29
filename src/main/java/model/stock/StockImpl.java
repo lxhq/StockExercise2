@@ -4,7 +4,6 @@ import model.manager.StockManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class StockImpl implements Stock {
 
@@ -20,39 +19,32 @@ public class StockImpl implements Stock {
     public StockImpl(StockManager stockManager, String stockSymbol) {
         this.stockManager = stockManager;
         this.shares = new ArrayList<>();
-        //Move outside the constructor
-        validTicker(stockSymbol);
         this.stockSymbol = stockSymbol;
+        validTicker(stockSymbol);
     }
 
     @Override
-    public String getSymbol() {
+    public String getStockSymbol() {
         return this.stockSymbol;
     }
 
     @Override
-    public List<Double> getShare() {
-        return shares.stream()
-                .map(a -> a.getShare())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<LocalDate> getDate() {
-        return shares.stream()
-                .map(a -> a.getDate())
-                .collect(Collectors.toList());
+    public List<Share> getShares() {
+        List<Share> res = new ArrayList<>();
+        for (Share share : shares) {
+            res.add(new Share(share.getShare(), share.getDate()));
+        }
+        return res;
     }
 
     @Override
     public void addShare(double share, LocalDate date) {
-        double cost;
         try {
-            cost = stockValue(date);
+            stockValue(date);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        this.shares.add(new Share(share, date));
+        this.shares.add(new Share(share, date.toString()));
     }
 
     @Override
@@ -63,27 +55,18 @@ public class StockImpl implements Stock {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        this.shares.add(new Share(share, date));
+        this.shares.add(new Share(share, date.toString()));
     }
 
     @Override
-    public double getCost(LocalDate date) {
-        //Use Stream
-        return this.shares
-                .stream()
-                .filter(a -> a.getDate().isBefore(date) || a.getDate().isEqual(date))
-                .map(a -> this.stockValue(a.getDate()) * a.getShare())
-                .reduce(0.0, (a, b) -> (a + b));
-    }
-
-    @Override
-    public double getValue(LocalDate date) {
-        //Use Stream
-        return this.shares
-                .stream()
-                .filter(a -> a.getDate().isBefore(date) || a.getDate().isEqual(date))
-                .map(a -> this.stockValue(date) * a.getShare())
-                .reduce(0.0, (a, b) -> (a + b));
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Stock Ticker: " + this.stockSymbol + "\n");
+        sb.append("Shares:\n");
+        for (Share share : shares) {
+            sb.append("Buy " + share.getShare() + " shares at " + share.getDate() + "\n");
+        }
+        return sb.toString();
     }
 
     private void validTicker(String stockSymbol) {

@@ -1,4 +1,4 @@
-package model.Repository;
+package model.repository;
 
 import com.google.inject.Singleton;
 import model.manager.StockManager;
