@@ -21,23 +21,21 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public boolean createStock(String ticker) {
-        if (stocks.containsKey(ticker)) {
-            return false;
-        } else {
+    public void createStock(String ticker) {
+        if (!stocks.containsKey(ticker)) {
             stocks.put(ticker, new StockImpl(stockManager, ticker));
-            return true;
+            return;
         }
+        throw new IllegalArgumentException();
     }
 
     @Override
-    public boolean deleteStock(String ticker) {
+    public void deleteStock(String ticker) {
         if (stocks.containsKey(ticker)) {
             stocks.remove(ticker);
-            return true;
-        } else {
-            return false;
+            return;
         }
+        throw new IllegalArgumentException();
     }
 
     @Override
@@ -47,8 +45,9 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Stock getStock(String ticker) {
-        return stocks.get(ticker);
+        if (stocks.containsKey(ticker)) {
+            return stocks.get(ticker);
+        }
+        throw new IllegalArgumentException();
     }
-
-
 }

@@ -71,7 +71,7 @@ public class StockImpl implements Stock {
 
     private void validTicker(String stockSymbol) {
         if (!this.stockManager.isCached(stockSymbol)) {
-            this.stockManager.refresh(stockSymbol);
+            //this.stockManager.refresh(stockSymbol);
             if (!this.stockManager.isCached(stockSymbol)) {
                 throw new IllegalArgumentException(
                         stockSymbol + ": " + "Sorry: there might be something wrong on your input. Try again please.");

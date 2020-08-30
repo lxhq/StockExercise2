@@ -9,22 +9,14 @@ public interface Repository {
     /**
      * Create a stock(ticker) in this repository
      * @param ticker Stock symbol
-     * @return True if successful
      */
-    boolean createStock(String ticker);
+    void createStock(String ticker);
 
     /**
      * Delete a stock(ticker) in this repository
      * @param ticker Stock symbol
-     * @return True if successful
      */
-    boolean deleteStock(String ticker);
-
-    /**
-     * Get all stocks from this repository
-     * @return A list of stocks in this repository
-     */
-    List<Stock> getAllStocks();
+    void deleteStock(String ticker);
 
     /**
      * Get a stock(ticker) from this repository
@@ -32,4 +24,12 @@ public interface Repository {
      * @return The Stock according to the ticker
      */
     Stock getStock(String ticker);
+
+    /**
+     * Get all stocks from this repository
+     * @return A list of stocks in this repository
+     */
+    List<Stock> getAllStocks();
+
+
 }

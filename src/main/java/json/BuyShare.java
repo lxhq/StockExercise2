@@ -1,15 +1,26 @@
 package json;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
+
+@XmlRootElement
 public class BuyShare {
+
+    @DecimalMin("0.00")
+    BigDecimal shares;
+
+    @Pattern(regexp = "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")
     String date;
-    double shares;
+
     String ticker;
 
     public String getDate() {
         return date;
     }
 
-    public double getShares() {
+    public BigDecimal getShares() {
         return shares;
     }
 
@@ -21,7 +32,7 @@ public class BuyShare {
         this.date = date;
     }
 
-    public void setShares(double shares) {
+    public void setShares(BigDecimal shares) {
         this.shares = shares;
     }
 
