@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Path("/stocks")
-public class GetRestful {
+public class Resource {
 
     @Inject
     Repository repository;
