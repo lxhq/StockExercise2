@@ -53,10 +53,10 @@ public class GetRestful {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createStock(final String ticker) throws TickerNotValidException {
         try {
-            repository.createStock(ticker);
+            Stock stock = repository.createStock(ticker);
             return Response
                     .status(Response.Status.OK)
-                    .entity(repository.getStock(ticker))
+                    .entity(stock)
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         } catch (IllegalArgumentException e) {
@@ -66,11 +66,14 @@ public class GetRestful {
 
     @DELETE
     @Path("/deleteStock")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteStock(final String ticker) throws TickerNotValidException {
         try {
-            repository.deleteStock(ticker);
+            Stock stock = repository.deleteStock(ticker);
             return Response
-                    .ok("Delete " + ticker + " successfully")
+                    .status(Response.Status.OK)
+                    .entity(stock)
+                    .type(MediaType.APPLICATION_JSON)
                     .build();
         } catch (IllegalArgumentException e) {
             throw new TickerNotValidException();
@@ -83,8 +86,7 @@ public class GetRestful {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyShares(@Valid final BuyShare buyShare) throws TickerNotValidException {
         try {
-            Stock stock = repository.getStock(buyShare.getTicker());
-            stock.addShare(buyShare.getShares().doubleValue(), LocalDate.parse(buyShare.getDate()));
+            Stock stock = repository.buyStock(buyShare);
             return Response
                     .status(Response.Status.OK)
                     .entity(stock)

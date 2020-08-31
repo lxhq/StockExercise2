@@ -1,11 +1,13 @@
 package model.repository;
 
 import com.google.inject.Singleton;
+import json.BuyShare;
 import model.manager.StockManager;
 import model.manager.StockManagerImpl;
 import model.stock.Stock;
 import model.stock.StockImpl;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Singleton
@@ -15,25 +17,34 @@ public class RepositoryImpl implements Repository {
     private StockManager stockManager;
 
     public RepositoryImpl() {
-        System.out.println("new Repository");
         stockManager = new StockManagerImpl();
         stocks = new HashMap<>();
     }
 
     @Override
-    public void createStock(String ticker) {
+    public Stock createStock(String ticker) {
         if (!stocks.containsKey(ticker)) {
-            stocks.put(ticker, new StockImpl(stockManager, ticker));
-            return;
+            stocks.put(ticker, new StockImpl(this.stockManager, ticker));
+            return stocks.get(ticker);
         }
         throw new IllegalArgumentException();
     }
 
     @Override
-    public void deleteStock(String ticker) {
+    public Stock deleteStock(String ticker) {
         if (stocks.containsKey(ticker)) {
-            stocks.remove(ticker);
-            return;
+            return stocks.remove(ticker);
+        }
+        throw new IllegalArgumentException();
+    }
+
+    @Override
+    public Stock buyStock(BuyShare buyShare) {
+        if (stocks.containsKey(buyShare.getTicker())) {
+            stocks.get(buyShare.getTicker())
+                    .addShare(buyShare.getShares().doubleValue(),
+                            LocalDate.parse(buyShare.getDate()));
+            return stocks.get(buyShare.getTicker());
         }
         throw new IllegalArgumentException();
     }

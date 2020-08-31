@@ -1,5 +1,6 @@
 package model.repository;
 
+import json.BuyShare;
 import model.stock.Stock;
 
 import java.util.List;
@@ -10,13 +11,7 @@ public interface Repository {
      * Create a stock(ticker) in this repository
      * @param ticker Stock symbol
      */
-    void createStock(String ticker);
-
-    /**
-     * Delete a stock(ticker) in this repository
-     * @param ticker Stock symbol
-     */
-    void deleteStock(String ticker);
+    Stock createStock(String ticker);
 
     /**
      * Get a stock(ticker) from this repository
@@ -31,5 +26,15 @@ public interface Repository {
      */
     List<Stock> getAllStocks();
 
+    /**
+     * Update a stock according information in busShare
+     * @param buyShare A buyShare object which contains all information we need to update a Stock
+     */
+    Stock buyStock(BuyShare buyShare);
 
+    /**
+     * Delete a stock(ticker) in this repository
+     * @param ticker Stock symbol
+     */
+    Stock deleteStock(String ticker);
 }

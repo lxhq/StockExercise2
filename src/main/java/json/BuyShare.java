@@ -39,6 +39,4 @@ public class BuyShare {
     public void setTicker(String ticker) {
         this.ticker = ticker;
     }
-
-
 }
