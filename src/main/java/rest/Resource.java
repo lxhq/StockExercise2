@@ -65,9 +65,9 @@ public class Resource {
     }
 
     @DELETE
-    @Path("/deleteStock")
+    @Path("/deleteStock/{ticker}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteStock(final String ticker) throws TickerNotValidException {
+    public Response deleteStock(@PathParam("ticker") String ticker) throws TickerNotValidException {
         try {
             Stock stock = repository.deleteStock(ticker);
             return Response
